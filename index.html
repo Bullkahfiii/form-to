@@ -163,31 +163,43 @@
         });
 
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const form = e.target;
-    const formData = new FormData(form);
-    
-    try {
-        // Kirim sebagai multipart/form-data
-        const response = await fetch('/api/submit-form', {
-            method: 'POST',
-            body: formData // Tidak perlu headers untuk FormData
-        });
+  e.preventDefault();
+  
+  const formData = {
+    nama: document.getElementById('nama').value,
+    whatsapp: document.getElementById('whatsapp').value,
+    asal_sekolah: document.getElementById('asal_sekolah').value,
+    info_dari: document.getElementById('info_dari').value,
+    info_lain: document.getElementById('info_lain').value || '',
+    kelas: document.getElementById('kelas').value,
+    mapel1: document.getElementById('mapel1').value,
+    mapel2: document.getElementById('mapel2').value
+  };
 
-        if (!response.ok) throw new Error(await response.text());
-        
-        // Tampilkan pesan sukses
-        document.getElementById('successMessage').classList.add('show-message');
-        form.reset();
-        
-    } catch (error) {
-        alert(`Gagal mengirim data: ${error.message}`);
-        console.error("Error details:", error);
+  try {
+    const response = await fetch('URL_API_VERCEL_ANDA', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+    
+    if (result.status === 'success') {
+      alert('Pendaftaran berhasil!');
+      document.getElementById('successMessage').classList.add('show-message');
+    } else {
+      throw new Error(result.message);
     }
-});
 
-                
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+    console.error('Full error:', error);
+  }
+});
+               
                 // Show success message
                 document.getElementById('successMessage').classList.add('show-message');
                 
