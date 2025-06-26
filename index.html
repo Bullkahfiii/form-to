@@ -163,29 +163,30 @@
         });
 
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const form = e.target;
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            
-            // Disable submit button
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
-            
-            try {
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                
-                // Send data to Vercel serverless function
-                const response = await fetch('/api/submit-form', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Gagal mengirim data');
-                }
+    e.preventDefault();
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    try {
+        // Kirim sebagai multipart/form-data
+        const response = await fetch('/api/submit-form', {
+            method: 'POST',
+            body: formData // Tidak perlu headers untuk FormData
+        });
+
+        if (!response.ok) throw new Error(await response.text());
+        
+        // Tampilkan pesan sukses
+        document.getElementById('successMessage').classList.add('show-message');
+        form.reset();
+        
+    } catch (error) {
+        alert(`Gagal mengirim data: ${error.message}`);
+        console.error("Error details:", error);
+    }
+});
+
                 
                 // Show success message
                 document.getElementById('successMessage').classList.add('show-message');
