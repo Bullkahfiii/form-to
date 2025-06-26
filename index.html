@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pendaftaran dengan Google Sheets</title>
+    <title>Form Pendaftaran Try Out Akbar TKA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,7 +18,7 @@
         .form-container:hover {
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             border-color: #4f46e5 !important;
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
         }
@@ -42,55 +42,99 @@
 <body class="flex items-center justify-center p-4">
     <div class="form-container bg-white rounded-xl p-8 w-full max-w-2xl">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2"><i class="fas fa-user-plus mr-2"></i>Form Pendaftaran</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Form Pendaftaran Try Out Akbar TKA</h1>
             <p class="text-gray-600">Isi form berikut untuk mendaftar. Data Anda akan disimpan ke Google Spreadsheet kami.</p>
         </div>
 
         <form id="registrationForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                    <input type="text" id="nama" name="nama" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                </div>
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
-                    <input type="email" id="email" name="email" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="telepon" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon <span class="text-red-500">*</span></label>
-                    <input type="tel" id="telepon" name="telepon" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                </div>
-                <div>
-                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
-                    <input type="date" id="tanggal" name="tanggal_lahir" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                </div>
+            <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                <input type="text" id="nama" name="nama" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
 
             <div>
-                <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
-                <textarea id="alamat" name="alamat" rows="3" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Nomor Whatsapp <span class="text-red-500">*</span></label>
+                <input type="tel" id="whatsapp" name="whatsapp" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Kelamin</label>
-                <div class="flex space-x-6">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="jenis_kelamin" value="Laki-laki" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500">
-                        <span class="ml-2 text-gray-700">Laki-laki</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="jenis_kelamin" value="Perempuan" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
-                        <span class="ml-2 text-gray-700">Perempuan</span>
-                    </label>
-                </div>
+                <label for="asal_sekolah" class="block text-sm font-medium text-gray-700 mb-1">Asal Sekolah <span class="text-red-500">*</span></label>
+                <input type="text" id="asal_sekolah" name="asal_sekolah" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Dapat Info Dari <span class="text-red-500">*</span></label>
+                <select id="info_dari" name="info_dari" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="">Pilih salah satu</option>
+                    <option value="Cabang Bandung-1 (Tamansari)">Cabang Bandung-1 (Tamansari)</option>
+                    <option value="Cabang Bandung-2 (Buahbatu)">Cabang Bandung-2 (Buahbatu)</option>
+                    <option value="Cabang Bandung-3 (Cimahi)">Cabang Bandung-3 (Cimahi)</option>
+                    <option value="Cabang Bandung-4 (Antapani)">Cabang Bandung-4 (Antapani)</option>
+                    <option value="Cabang Bandung-5 (Abdurrahman Saleh)">Cabang Bandung-5 (Abdurrahman Saleh)</option>
+                    <option value="Cabang Bandung-6 (Kopo)">Cabang Bandung-6 (Kopo)</option>
+                    <option value="Cabang Bandung-7 (Cipacing)">Cabang Bandung-7 (Cipacing)</option>
+                    <option value="Sosial Media">Sosial Media</option>
+                    <option value="lain-lain">Lain-lain (isi teks manual)</option>
+                </select>
+                <input type="text" id="info_lain" name="info_lain" placeholder="Jika lain-lain, silakan isi" 
+                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 hidden">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Kelas <span class="text-red-500">*</span></label>
+                <select id="kelas" name="kelas" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="">Pilih salah satu</option>
+                    <option value="1 SMA">1 SMA</option>
+                    <option value="2 SMA">2 SMA</option>
+                    <option value="3 SMA">3 SMA</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Mapel Pilihan 1 <span class="text-red-500">*</span></label>
+                <select id="mapel1" name="mapel1" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="">Pilih salah satu</option>
+                    <option value="Matematika Lanjut">Matematika Lanjut</option>
+                    <option value="Fisika">Fisika</option>
+                    <option value="Kimia">Kimia</option>
+                    <option value="Biologi">Biologi</option>
+                    <option value="Sejarah">Sejarah</option>
+                    <option value="Ekonomi">Ekonomi</option>
+                    <option value="Sosiologi">Sosiologi</option>
+                    <option value="Geografi">Geografi</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Mapel Pilihan 2 <span class="text-red-500">*</span></label>
+                <select id="mapel2" name="mapel2" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="">Pilih salah satu</option>
+                    <option value="Matematika Lanjut">Matematika Lanjut</option>
+                    <option value="Fisika">Fisika</option>
+                    <option value="Kimia">Kimia</option>
+                    <option value="Biologi">Biologi</option>
+                    <option value="Sejarah">Sejarah</option>
+                    <option value="Ekonomi">Ekonomi</option>
+                    <option value="Sosiologi">Sosiologi</option>
+                    <option value="Geografi">Geografi</option>
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <p class="text-sm text-gray-600">Info Pembayaran: Silakan transfer ke nomor rekening XXXXXXXXXX</p>
+            </div>
+
+            <div>
+                <label for="bukti_pembayaran" class="block text-sm font-medium text-gray-700 mb-1">Upload Bukti Pembayaran <span class="text-red-500">*</span></label>
+                <input type="file" id="bukti_pembayaran" name="bukti_pembayaran" required 
+                    class="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
             </div>
 
             <div class="pt-4">
@@ -108,6 +152,16 @@
     </div>
 
     <script>
+        document.getElementById('info_dari').addEventListener('change', function() {
+            const infoLainInput = document.getElementById('info_lain');
+            if (this.value === 'lain-lain') {
+                infoLainInput.classList.remove('hidden');
+            } else {
+                infoLainInput.classList.add('hidden');
+                infoLainInput.value = ''; // Reset input
+            }
+        });
+
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -126,10 +180,7 @@
                 // Send data to Vercel serverless function
                 const response = await fetch('/api/submit-form', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
                 
                 if (!response.ok) {
