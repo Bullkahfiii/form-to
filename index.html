@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran dengan Google Sheets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .form-container {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .form-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        input:focus, textarea:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+        }
+        .btn-submit {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.3);
+        }
+        .success-message {
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        .show-message {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="form-container bg-white rounded-xl p-8 w-full max-w-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2"><i class="fas fa-user-plus mr-2"></i>Form Pendaftaran</h1>
+            <p class="text-gray-600">Isi form berikut untuk mendaftar. Data Anda akan disimpan ke Google Spreadsheet kami.</p>
+        </div>
+
+        <form id="registrationForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                    <input type="text" id="nama" name="nama" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
+                    <input type="email" id="email" name="email" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="telepon" class="block text-sm font-medium text-gray-700 mb-1">No. Telepon <span class="text-red-500">*</span></label>
+                    <input type="tel" id="telepon" name="telepon" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
+                    <input type="date" id="tanggal" name="tanggal_lahir" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
+                <textarea id="alamat" name="alamat" rows="3" required 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-3">Jenis Kelamin</label>
+                <div class="flex space-x-6">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="jenis_kelamin" value="Laki-laki" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                        <span class="ml-2 text-gray-700">Laki-laki</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="jenis_kelamin" value="Perempuan" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                        <span class="ml-2 text-gray-700">Perempuan</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="btn-submit text-white py-3 px-6 rounded-lg font-medium w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    <i class="fas fa-paper-plane mr-2"></i> Daftar Sekarang
+                </button>
+            </div>
+        </form>
+
+        <div id="successMessage" class="success-message mt-6 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 text-center">
+            <i class="fas fa-check-circle text-2xl mb-2"></i>
+            <h3 class="font-bold">Pendaftaran Berhasil!</h3>
+            <p class="text-sm">Data Anda telah tersimpan. Kami akan menghubungi Anda segera.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
+            
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Send data to Vercel serverless function
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengirim data');
+                }
+                
+                // Show success message
+                document.getElementById('successMessage').classList.add('show-message');
+                
+                // Reset form
+                form.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.remove('show-message');
+                }, 5000);
+                
+            } catch (error) {
+                alert('Terjadi kesalahan: ' + error.message);
+                console.error('Error:', error);
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html>
