@@ -1,225 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pendaftaran Try Out Akbar TKA</title>
+    <title>Form Pendaftaran Modern</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+        .gradient-bg {
+            background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
         }
-        .form-container {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .form-container:hover {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
-        input:focus, textarea:focus, select:focus {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+        .file-input::-webkit-file-upload-button {
+            visibility: hidden;
         }
-        .btn-submit {
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
-            transition: all 0.3s ease;
+        .file-input::before {
+            content: 'Pilih File';
+            display: inline-block;
+            background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+            color: white;
+            border-radius: 4px;
+            padding: 8px 12px;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
         }
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.3);
+        .spinner {
+            animation: spin 1s linear infinite;
         }
-        .success-message {
-            opacity: 0;
-            transition: all 0.5s ease;
-        }
-        .show-message {
-            opacity: 1;
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4">
-    <div class="form-container bg-white rounded-xl p-8 w-full max-w-2xl">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Form Pendaftaran Try Out Akbar TKA</h1>
-            <p class="text-gray-600">Isi form berikut untuk mendaftar. Data Anda akan disimpan ke Google Spreadsheet kami.</p>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-white rounded-xl card-shadow overflow-hidden">
+        <!-- Header Form -->
+        <div class="bg-indigo-700 text-white p-6">
+            <h1 class="text-2xl font-bold flex items-center">
+                <i class="fas fa-user-plus mr-3"></i>
+                Formulir Pendaftaran
+            </h1>
+            <p class="text-indigo-100 mt-1">Silakan isi data diri Anda dengan lengkap</p>
         </div>
-
-        <form id="registrationForm" class="space-y-6">
-            <div>
-                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                <input type="text" id="nama" name="nama" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+        
+        <!-- Form Content -->
+        <form id="registerForm" class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Kolom Kiri -->
+                <div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="nama">
+                            Nama Lengkap <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="nama" name="nama" required
+                            class="w-full px-4 py-2 border rounded-lg input-focus focus:outline-none focus:border-indigo-500"
+                            placeholder="Masukkan nama lengkap">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="email">
+                            Email <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-4 py-2 border rounded-lg input-focus focus:outline-none focus:border-indigo-500"
+                            placeholder="contoh@email.com">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="telepon">
+                            Nomor Telepon
+                        </label>
+                        <input type="tel" id="telepon" name="telepon"
+                            class="w-full px-4 py-2 border rounded-lg input-focus focus:outline-none focus:border-indigo-500"
+                            placeholder="081234567890">
+                    </div>
+                </div>
+                
+                <!-- Kolom Kanan -->
+                <div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="alamat">
+                            Alamat
+                        </label>
+                        <textarea id="alamat" name="alamat" rows="3"
+                            class="w-full px-4 py-2 border rounded-lg input-focus focus:outline-none focus:border-indigo-500"
+                            placeholder="Alamat lengkap"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="foto">
+                            Upload Foto Profil <span class="text-red-500">*</span>
+                        </label>
+                        <div class="flex items-center">
+                            <input type="file" id="foto" name="foto" accept="image/*" required
+                                class="file-input w-full text-gray-700 border rounded-lg cursor-pointer focus:outline-none">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Format: JPG/PNG (maks. 2MB)</p>
+                        <div id="previewContainer" class="mt-2 hidden">
+                            <img id="imagePreview" src="#" alt="Pratinjau gambar yang dipilih" 
+                                class="max-h-32 rounded-lg border border-gray-300">
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div>
-                <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-1">Nomor Whatsapp <span class="text-red-500">*</span></label>
-                <input type="tel" id="whatsapp" name="whatsapp" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-            </div>
-
-            <div>
-                <label for="asal_sekolah" class="block text-sm font-medium text-gray-700 mb-1">Asal Sekolah <span class="text-red-500">*</span></label>
-                <input type="text" id="asal_sekolah" name="asal_sekolah" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Dapat Info Dari <span class="text-red-500">*</span></label>
-                <select id="info_dari" name="info_dari" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="">Pilih salah satu</option>
-                    <option value="Cabang Bandung-1 (Tamansari)">Cabang Bandung-1 (Tamansari)</option>
-                    <option value="Cabang Bandung-2 (Buahbatu)">Cabang Bandung-2 (Buahbatu)</option>
-                    <option value="Cabang Bandung-3 (Cimahi)">Cabang Bandung-3 (Cimahi)</option>
-                    <option value="Cabang Bandung-4 (Antapani)">Cabang Bandung-4 (Antapani)</option>
-                    <option value="Cabang Bandung-5 (Abdurrahman Saleh)">Cabang Bandung-5 (Abdurrahman Saleh)</option>
-                    <option value="Cabang Bandung-6 (Kopo)">Cabang Bandung-6 (Kopo)</option>
-                    <option value="Cabang Bandung-7 (Cipacing)">Cabang Bandung-7 (Cipacing)</option>
-                    <option value="Sosial Media">Sosial Media</option>
-                    <option value="lain-lain">Lain-lain (isi teks manual)</option>
-                </select>
-                <input type="text" id="info_lain" name="info_lain" placeholder="Jika lain-lain, silakan isi" 
-                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 hidden">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Kelas <span class="text-red-500">*</span></label>
-                <select id="kelas" name="kelas" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="">Pilih salah satu</option>
-                    <option value="1 SMA">1 SMA</option>
-                    <option value="2 SMA">2 SMA</option>
-                    <option value="3 SMA">3 SMA</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Mapel Pilihan 1 <span class="text-red-500">*</span></label>
-                <select id="mapel1" name="mapel1" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="">Pilih salah satu</option>
-                    <option value="Matematika Lanjut">Matematika Lanjut</option>
-                    <option value="Fisika">Fisika</option>
-                    <option value="Kimia">Kimia</option>
-                    <option value="Biologi">Biologi</option>
-                    <option value="Sejarah">Sejarah</option>
-                    <option value="Ekonomi">Ekonomi</option>
-                    <option value="Sosiologi">Sosiologi</option>
-                    <option value="Geografi">Geografi</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Mapel Pilihan 2 <span class="text-red-500">*</span></label>
-                <select id="mapel2" name="mapel2" required 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <option value="">Pilih salah satu</option>
-                    <option value="Matematika Lanjut">Matematika Lanjut</option>
-                    <option value="Fisika">Fisika</option>
-                    <option value="Kimia">Kimia</option>
-                    <option value="Biologi">Biologi</option>
-                    <option value="Sejarah">Sejarah</option>
-                    <option value="Ekonomi">Ekonomi</option>
-                    <option value="Sosiologi">Sosiologi</option>
-                    <option value="Geografi">Geografi</option>
-                </select>
-            </div>
-
-            <div class="mt-4">
-                <p class="text-sm text-gray-600">Info Pembayaran: Silakan transfer ke nomor rekening XXXXXXXXXX</p>
-            </div>
-
-            <div>
-                <label for="bukti_pembayaran" class="block text-sm font-medium text-gray-700 mb-1">Upload Bukti Pembayaran <span class="text-red-500">*</span></label>
-                <input type="file" id="bukti_pembayaran" name="bukti_pembayaran" required 
-                    class="w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-            </div>
-
-            <div class="pt-4">
-                <button type="submit" class="btn-submit text-white py-3 px-6 rounded-lg font-medium w-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                    <i class="fas fa-paper-plane mr-2"></i> Daftar Sekarang
+            
+            <!-- Tombol Submit -->
+            <div class="mt-6 flex justify-end">
+                <button type="submit" id="submitBtn"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg flex items-center transition duration-300">
+                    <span id="submitText">Daftar Sekarang</span>
+                    <i id="submitIcon" class="fas fa-paper-plane ml-2"></i>
+                    <i id="loadingIcon" class="fas fa-spinner spinner ml-2 hidden"></i>
                 </button>
             </div>
         </form>
+    </div>
 
-        <div id="successMessage" class="success-message mt-6 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 text-center">
-            <i class="fas fa-check-circle text-2xl mb-2"></i>
-            <h3 class="font-bold">Pendaftaran Berhasil!</h3>
-            <p class="text-sm">Data Anda telah tersimpan. Kami akan menghubungi Anda segera.</p>
+    <!-- Modal Sukses -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 card-shadow">
+            <div class="text-center">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-600 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Pendaftaran Berhasil!</h3>
+                <p class="text-gray-600 mb-6">Data Anda telah tersimpan. Kami akan menghubungi Anda segera.</p>
+                <button onclick="hideModal()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+                    Tutup
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('info_dari').addEventListener('change', function() {
-            const infoLainInput = document.getElementById('info_lain');
-            if (this.value === 'lain-lain') {
-                infoLainInput.classList.remove('hidden');
-            } else {
-                infoLainInput.classList.add('hidden');
-                infoLainInput.value = ''; // Reset input
+        // Preview gambar yang dipilih
+        document.getElementById('foto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('imagePreview').src = event.target.result;
+                    document.getElementById('previewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
             }
         });
 
-        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const formData = {
-    nama: document.getElementById('nama').value,
-    whatsapp: document.getElementById('whatsapp').value,
-    asal_sekolah: document.getElementById('asal_sekolah').value,
-    info_dari: document.getElementById('info_dari').value,
-    info_lain: document.getElementById('info_lain').value || '',
-    kelas: document.getElementById('kelas').value,
-    mapel1: document.getElementById('mapel1').value,
-    mapel2: document.getElementById('mapel2').value
-  };
-
-  try {
-    const response = await fetch('URL_API_VERCEL_ANDA', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-
-    const result = await response.json();
-    
-    if (result.status === 'success') {
-      alert('Pendaftaran berhasil!');
-      document.getElementById('successMessage').classList.add('show-message');
-    } else {
-      throw new Error(result.message);
-    }
-
-  } catch (error) {
-    alert(`Error: ${error.message}`);
-    console.error('Full error:', error);
-  }
-});
-               
-                // Show success message
-                document.getElementById('successMessage').classList.add('show-message');
+        // Handle form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Tampilkan loading
+            document.getElementById('submitText').textContent = 'Mengirim...';
+            document.getElementById('submitIcon').classList.add('hidden');
+            document.getElementById('loadingIcon').classList.remove('hidden');
+            document.getElementById('submitBtn').disabled = true;
+            
+            try {
+                const formData = new FormData(this);
                 
-                // Reset form
-                form.reset();
+                // Kirim data ke Vercel endpoint
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    body: formData
+                });
                 
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    document.getElementById('successMessage').classList.remove('show-message');
-                }, 5000);
+                const result = await response.json();
                 
+                if (response.ok) {
+                    // Tampilkan modal sukses
+                    showModal();
+                    // Reset form
+                    document.getElementById('registerForm').reset();
+                    document.getElementById('previewContainer').classList.add('hidden');
+                } else {
+                    throw new Error(result.message || 'Terjadi kesalahan');
+                }
             } catch (error) {
-                alert('Terjadi kesalahan: ' + error.message);
-                console.error('Error:', error);
+                alert('Gagal mengirim data: ' + error.message);
             } finally {
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+                // Reset button state
+                document.getElementById('submitText').textContent = 'Daftar Sekarang';
+                document.getElementById('submitIcon').classList.remove('hidden');
+                document.getElementById('loadingIcon').classList.add('hidden');
+                document.getElementById('submitBtn').disabled = false;
             }
         });
+
+        function showModal() {
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
     </script>
 </body>
 </html>
