@@ -23,7 +23,7 @@
     <div class="container mx-auto px-4 py-12">
         <!-- Header Section -->
         <div class="text-center mb-12">
-            <img src="https://placehold.co/150x80" alt="Logo Try Out Akbar dengan teks 'TKA' berwarna biru dan latar belakang putih" class="mx-auto mb-4" />
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3e3cd168-215e-41b9-a53d-40af9f277c27.png" alt="Logo Try Out Akbar dengan teks 'TKA' berwarna biru dan latar belakang putih" class="mx-auto mb-4" />
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Form Pendaftaran</h1>
             <h2 class="text-3xl font-semibold text-blue-600">Try Out Akbar TKA</h2>
         </div>
@@ -170,32 +170,51 @@
             
             try {
                 // Ganti URL ini dengan URL Google Apps Script Anda
-                const response = await fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+                const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data),
+                    body: JSON.stringify({
+                        timestamp: new Date(),
+                        ...data
+                    }),
+                    mode: 'no-cors'
                 });
                 
-                const result = await response.json();
+                if (!response.ok) throw new Error('Network response was not ok');
                 
-                if (result.result === "success") {
-                    // Buka WhatsApp setelah submit berhasil
-                    const whatsappMessage = encodeURIComponent("Halo kak, aku udah daftar buat ikutan TO ya");
-                    window.open(`https://wa.me/6289643083341?text=${whatsappMessage}`, '_blank');
-                    
-                    // Reset form
-                    form.reset();
-                    
-                    // Tampilkan notifikasi sukses
-                    alert('Pendaftaran berhasil! Kami telah mengirimkan detail lebih lanjut ke WhatsApp Anda.');
+                // For no-cors mode, we can't read the response but assume success
+                const result = { result: "success" };
+                
+                // Buka WhatsApp setelah submit berhasil
+                const whatsappMessage = encodeURIComponent(
+                    `Halo kak, berikut data pendaftaran saya:\n\n` +
+                    `Nama: ${data.nama}\n` +
+                    `WhatsApp: ${data.whatsapp}\n` +
+                    `Asal Sekolah: ${data.asalSekolah}\n` +
+                    `Mapel Pilihan: ${data.mapelPilihan1}, ${data.mapelPilihan2}\n\n` +
+                    `Aku udah daftar buat ikutan TO ya`
+                );
+                
+                window.open(`https://wa.me/6289643083341?text=${whatsappMessage}`, '_blank');
+                
+                // Reset form
+                form.reset();
+                
+                // Tampilkan notifikasi sukses dengan lebih banyak info
+                alert(`Pendaftaran berhasil ${data.nama}!\n\n` +
+                    `Kami telah mengirimkan konfirmasi ke WhatsApp Anda.\n` +
+                    `Silakan selesaikan pembayaran ke rekening yang tertera.`);
                 } else {
                     throw new Error('Gagal mengirim data');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengirim formulir. Silakan coba lagi atau hubungi panitia.');
+                alert(`Terjadi kesalahan:\n\n${error.message}\n\n` +
+                    'Silakan coba lagi atau hubungi panitia di:\n' +
+                    'WhatsApp: 6289643083341');
             } finally {
                 // Kembalikan tombol ke state semula
                 submitBtn.disabled = false;
