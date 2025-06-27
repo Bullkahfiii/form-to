@@ -176,27 +176,37 @@
             `;
             
             try {
-                // Ganti URL ini dengan URL Google Apps Script Anda
-                // Format the data for Google Sheets
-                const payload = new URLSearchParams();
-                payload.append('timestamp', new Date().toISOString());
-                payload.append('nama', data.nama);
-                payload.append('whatsapp', data.whatsapp);
-                payload.append('asalSekolah', data.asalSekolah);
-                payload.append('infoDari', data.infoDari);
-                payload.append('kelas', data.kelas);
-                payload.append('mapelPilihan1', data.mapelPilihan1);
-                payload.append('mapelPilihan2', data.mapelPilihan2);
-
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbyk8yPsU5lD9RPZG1COgI4-tgVWi-Z8cCxzenlgABxCfV1p2hmxaWPvxx-3aLVwkERB/exec';
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    body: payload
+                    body: JSON.stringify({
+                      timestamp: new Date().toISOString(),
+                      nama: data.nama,
+                      whatsapp: data.whatsapp,
+                      asalSekolah: data.asalSekolah,
+                      infoDari: data.infoDari,
+                      kelas: data.kelas,
+                      mapelPilihan1: data.mapelPilihan1,
+                      mapelPilihan2: data.mapelPilihan2
+                    }),
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    credentials: 'omit'
                 });
                 
                 // Log response for debugging
                 console.log('Google Script Response:', response);
-                if (!response.ok) throw new Error('Gagal mengirim data ke server');
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} ${errorText}`);
+                }
+                
+                // Verify successful submission
+                const result = await response.json();
+                if (result.result !== "success") {
+                    throw new Error(result.message || 'Unknown error');
+                }
                 
                 // Buka WhatsApp setelah submit berhasil
                 const whatsappMessage = encodeURIComponent(
