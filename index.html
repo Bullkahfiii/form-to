@@ -23,8 +23,7 @@
     <div class="container mx-auto px-4 py-12">
         <!-- Header Section -->
         <div class="text-center mb-12">
-            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3e3cd168-215e-41b9-a53d-40af9f277c27.png" alt="Logo Try Out Akbar dengan teks 'TKA' berwarna biru dan latar belakang putih" class="mx-auto mb-4" />
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Form Pendaftaran</h1>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Form Pendaftaran</h1>
             <h2 class="text-3xl font-semibold text-blue-600">Try Out Akbar TKA</h2>
         </div>
 
@@ -166,27 +165,38 @@
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengirim...';
+            submitBtn.innerHTML = `
+                <div class="flex items-center justify-center">
+                    <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Mengirim Data...</span>
+                </div>
+            `;
             
             try {
                 // Ganti URL ini dengan URL Google Apps Script Anda
-                const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+                // Format the data for Google Sheets
+                const payload = new URLSearchParams();
+                payload.append('timestamp', new Date().toISOString());
+                payload.append('nama', data.nama);
+                payload.append('whatsapp', data.whatsapp);
+                payload.append('asalSekolah', data.asalSekolah);
+                payload.append('infoDari', data.infoDari);
+                payload.append('kelas', data.kelas);
+                payload.append('mapelPilihan1', data.mapelPilihan1);
+                payload.append('mapelPilihan2', data.mapelPilihan2);
+
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbyk8yPsU5lD9RPZG1COgI4-tgVWi-Z8cCxzenlgABxCfV1p2hmxaWPvxx-3aLVwkERB/exec';
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        timestamp: new Date(),
-                        ...data
-                    }),
-                    mode: 'no-cors'
+                    body: payload
                 });
                 
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                // For no-cors mode, we can't read the response but assume success
-                const result = { result: "success" };
+                // Log response for debugging
+                console.log('Google Script Response:', response);
+                if (!response.ok) throw new Error('Gagal mengirim data ke server');
                 
                 // Buka WhatsApp setelah submit berhasil
                 const whatsappMessage = encodeURIComponent(
@@ -212,9 +222,10 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert(`Terjadi kesalahan:\n\n${error.message}\n\n` +
-                    'Silakan coba lagi atau hubungi panitia di:\n' +
-                    'WhatsApp: 6289643083341');
+                alert(`Terjadi kesalahan saat menyimpan data:\n\n${error.message}\n\n` +
+                    'Silakan screenshot form ini dan hubungi panitia di:\n' +
+                    'WhatsApp: 6289643083341\n\n' +
+                    'Edit: ' + error.stack);
             } finally {
                 // Kembalikan tombol ke state semula
                 submitBtn.disabled = false;
