@@ -102,9 +102,11 @@
                         </label>
                         <div class="flex items-center">
                             <input type="file" id="foto" name="foto" accept="image/*" required
-                                class="file-input w-full text-gray-700 border rounded-lg cursor-pointer focus:outline-none">
+                                class="file-input w-full text-gray-700 border rounded-lg cursor-pointer focus:outline-none"
+                                onchange="validateFileSize(this)">
                         </div>
                         <p class="text-xs text-gray-500 mt-1">Format: JPG/PNG (maks. 2MB)</p>
+                        <p id="fileError" class="text-xs text-red-500 mt-1 hidden">Ukuran file melebihi 2MB</p>
                         <div id="previewContainer" class="mt-2 hidden">
                             <img id="imagePreview" src="#" alt="Pratinjau gambar yang dipilih" 
                                 class="max-h-32 rounded-lg border border-gray-300">
@@ -203,6 +205,16 @@
 
         function hideModal() {
             document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function validateFileSize(input) {
+            const fileError = document.getElementById('fileError');
+            if (input.files[0].size > 2 * 1024 * 1024) {
+                fileError.classList.remove('hidden');
+                input.value = '';
+            } else {
+                fileError.classList.add('hidden');
+            }
         }
     </script>
 </body>
